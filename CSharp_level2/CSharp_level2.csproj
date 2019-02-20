@@ -49,7 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseObject.cs" />
+    <Compile Include="BaseSalary.cs" />
+    <Compile Include="FixedSalary.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="HourlySalary.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Star.cs" />
