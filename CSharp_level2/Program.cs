@@ -2,6 +2,7 @@
 
 using System;
 using System.Windows.Forms;
+
 // Создаем шаблон приложения, где подключаем модули
 namespace MyGame
 {
