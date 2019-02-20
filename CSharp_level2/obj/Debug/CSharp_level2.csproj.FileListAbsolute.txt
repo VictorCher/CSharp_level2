@@ -1,6 +1,0 @@
-C:\Users\Виктор\Desktop\CSharp_level2\CSharp_level2\bin\Debug\CSharp_level2.exe.config
-C:\Users\Виктор\Desktop\CSharp_level2\CSharp_level2\bin\Debug\CSharp_level2.exe
-C:\Users\Виктор\Desktop\CSharp_level2\CSharp_level2\bin\Debug\CSharp_level2.pdb
-C:\Users\Виктор\Desktop\CSharp_level2\CSharp_level2\obj\Debug\CSharp_level2.csprojResolveAssemblyReference.cache
-C:\Users\Виктор\Desktop\CSharp_level2\CSharp_level2\obj\Debug\CSharp_level2.exe
-C:\Users\Виктор\Desktop\CSharp_level2\CSharp_level2\obj\Debug\CSharp_level2.pdb
