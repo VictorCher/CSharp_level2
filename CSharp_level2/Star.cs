@@ -1,5 +1,4 @@
-﻿//using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace MyGame
 {
@@ -10,16 +9,14 @@ namespace MyGame
         }
         public override void Draw()
         {
-            Game.Buffer.Graphics.DrawLine(Pens.White, Pos.X, Pos.Y, Pos.X + Size.Width,
+            Game.Buffer.Graphics.DrawLine(Pens.Yellow, Pos.X, Pos.Y, Pos.X + Size.Width,
             Pos.Y + Size.Height);
-            Game.Buffer.Graphics.DrawLine(Pens.White, Pos.X + Size.Width, Pos.Y, Pos.X,
+            Game.Buffer.Graphics.DrawLine(Pens.Yellow, Pos.X + Size.Width, Pos.Y, Pos.X,
             Pos.Y + Size.Height);
         }
         public override void Update()
         {
-            //Pos.X = Pos.X - Dir.X;
-            //if (Pos.X < 0) Pos.X = Game.Width + Size.Width;
-            Pos.X -= 10;
+            Pos.X -= -Dir.X; ;
             if (Pos.X < 0) Pos.X = Game.Width + Size.Width;
         }
     }

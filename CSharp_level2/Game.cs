@@ -58,11 +58,16 @@ namespace MyGame
         public static BaseObject[] _objs;
         public static void Load()
         {
-            _objs = new BaseObject[30];
-            for (int i = 0; i < _objs.Length / 2; i++)
+            _objs = new BaseObject[31];
+            for (int i = 0; i < 10; i++)
                 _objs[i] = new BaseObject(new Point(600, i * 20), new Point(-i, -i), new Size(10, 10));
-            for (int i = _objs.Length / 2; i < _objs.Length; i++)
-                _objs[i] = new Star(new Point(600, i * 20), new Point(-i, 0), new Size(5, 5));
+            for (int i = 10; i < 20; i++)
+                _objs[i] = new Star(new Point(600, i * 50-400), new Point(-i, 0), new Size(5, 5));
+
+            for (int i = 20; i < 30; i++)
+                _objs[i] = new BaseObject(new Point(600, i * 20), new Point(-i, -i), new Size(2, 2));
+            for (int i = 30; i < 31; i++)
+                _objs[i] = new Ufo(new Point(600, i * 50-1200), new Point(-i/4, -i/2), new Size(30, 30));
         }
     }
 }
