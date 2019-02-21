@@ -44,7 +44,7 @@ namespace MyGame
 
         static void Main(string[] args)
         {
-            Task1();
+            //Task1();
             Task2();
         }
     }
