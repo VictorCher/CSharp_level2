@@ -9,11 +9,17 @@ namespace MyGame
     abstract class BaseSalary
     {
         protected double salary;
+        protected string name;
 
-        protected BaseSalary()
+        protected BaseSalary(string name, double rate)
         {
-            //this.salary = rate;
+            this.name = name;
+        }
+        public override string ToString()
+        {
+            return $"Имя сотрудника: {this.name.ToString()}\nСреднемесячная зарплата: {this.salary.ToString()} y.e.\n";
         }
         public double Salary => salary;
+        public string Name => name;
     }
 }

@@ -8,7 +8,7 @@ namespace MyGame
 {
     class FixedSalary : BaseSalary
     {
-        public FixedSalary(double rate)
+        public FixedSalary(string name, double rate) : base (name, rate)
         {
             this.salary = rate;
         }

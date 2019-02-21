@@ -8,7 +8,7 @@ namespace MyGame
 {
     class HourlySalary : BaseSalary
     {
-        public HourlySalary(double rate)
+        public HourlySalary(string name, double rate) : base(name, rate)
         {
             this.salary = 20.8 * 8 * rate;
         }

@@ -2,15 +2,15 @@
 
 namespace MyGame
 {
-    class Ufo : BaseObject
+    class Planet : BaseObject
     {
-        public Ufo(Point pos, Point dir, Size size) : base(pos, dir, size)
+        public Planet(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
         }
         public override void Draw()
         {
-            Image img = Image.FromFile(@"..\..\ufo.png");
-            Game.Buffer.Graphics.DrawImage(img,Pos);
+            Game.Buffer.Graphics.DrawEllipse(Pens.White, Pos.X, Pos.Y,
+           Size.Width, Size.Height);
         }
         public override void Update()
         {

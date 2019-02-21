@@ -20,10 +20,10 @@ namespace MyGame
              * d. * Создать класс, содержащий массив сотрудников, и реализовать возможность вывода
              * данных с использованием foreach. */
 
-            HourlySalary worker1 = new HourlySalary(20);
-            FixedSalary worker2 = new FixedSalary(200);
-            double pay = worker2.Salary;
-            MessageBox.Show(pay.ToString());
+            BaseSalary[] worker = new BaseSalary[2]; 
+            worker[0] = new HourlySalary("Вася", 20);
+            worker[1] = new FixedSalary("Петя", 3000);
+            MessageBox.Show(worker[0].ToString() + worker[1].ToString());
         }
 
         static void Task2()
@@ -45,7 +45,7 @@ namespace MyGame
         static void Main(string[] args)
         {
             Task1();
-            //Task2();
+            Task2();
         }
     }
 }
