@@ -2,15 +2,16 @@
 
 namespace MyGame
 {
-    class Ufo : BaseObject
+    class Medic : BaseObject
     {
-        public Ufo(Point pos, Point dir, Size size) : base(pos, dir, size)
+        public Medic(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
         }
         public override void Draw()
         {
-            Image img = Image.FromFile(@"..\..\ufo.png");
+            Image img = Image.FromFile(@"..\..\medic.png");
             Game.Buffer.Graphics.DrawImage(img,Pos);
+            
         }
     }
 }

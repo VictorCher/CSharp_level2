@@ -5,7 +5,13 @@ namespace MyGame
     {
         public static event Message MessageDie;
         private int _energy = 100;
+        private int _score = 0;
         public int Energy => _energy;
+        public int Score => _score;
+        public void AddScore()
+        {
+            _score++;
+        }
         public void Die()
         {
             MessageDie?.Invoke();
@@ -13,6 +19,10 @@ namespace MyGame
         public void EnergyLow(int n)
         {
             _energy -= n;
+        }
+        public void EnergyHigh(int n)
+        {
+            _energy += n;
         }
         public Ship(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
@@ -23,6 +33,7 @@ namespace MyGame
 
             Image img = Image.FromFile(@"..\..\ufo.png");
             Game.Buffer.Graphics.DrawImage(img, Pos);
+           
         }
         public override void Update()
         {

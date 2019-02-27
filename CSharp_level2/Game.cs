@@ -56,15 +56,19 @@ namespace MyGame
             //Buffer.Render();
             Buffer.Graphics.Clear(Color.Black);
             foreach (BaseObject obj in _objs)
-                obj.Draw();
+                obj?.Draw();
             foreach (Asteroid obj in _asteroids)
                 obj?.Draw();
-
+            _medic?.Draw();
             _bullet?.Draw();
             _ship?.Draw();
             if (_ship != null)
+            {
                 Buffer.Graphics.DrawString("Energy:" + _ship.Energy,
                 SystemFonts.DefaultFont, Brushes.White, 0, 0);
+                Buffer.Graphics.DrawString("Score:" + _ship.Score,
+                SystemFonts.DefaultFont, Brushes.White, 0, 20);
+            }
             Buffer.Render();
         }
         private static void Timer_Tick(object sender, EventArgs e)
@@ -75,7 +79,7 @@ namespace MyGame
         public static void Update()
         {
             foreach (BaseObject obj in _objs)
-                obj.Update();
+                obj?.Update();
 
 
             /*foreach (Asteroid obj in _asteroids)
@@ -97,6 +101,7 @@ namespace MyGame
                     System.Media.SystemSounds.Hand.Play();
                     _asteroids[i] = null;
                     _bullet = null;
+                    _ship.AddScore();
                     continue;
                 }
                 if (!_ship.Collision(_asteroids[i])) continue;
@@ -105,9 +110,11 @@ namespace MyGame
                 System.Media.SystemSounds.Asterisk.Play();
                 if (_ship.Energy <= 0) _ship?.Die();
             }
+            if (_ship.Collision(_medic)&&_ship.Energy<100)  _ship?.EnergyHigh(5);
+            if (_ship.Energy > 100) _ship?.EnergyLow(_ship.Energy - 100);
 
-
-            _bullet.Update();
+            _bullet?.Update();
+            _medic?.Update();
         }
         public static void Finish()
         {
@@ -117,15 +124,18 @@ namespace MyGame
             Buffer.Render();
         }
         public static BaseObject[] _objs;
+        public static BaseObject _medic;
         private static Bullet _bullet;
         private static Asteroid[] _asteroids;
         public static void Load()
         {
-            _objs = new BaseObject[31];
-            _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
+            _objs = new BaseObject[30];
+            //_bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
             _asteroids = new Asteroid[10];
+            //_medic = new BaseObject[1];
+
             var rnd = new Random();
-            for (var i = 0; i < _objs.Length-1; i++)
+            for (var i = 0; i < _objs.Length; i++)
             {
                 int r = rnd.Next(5, 50);
                 _objs[i] = new Star(new Point(1000, rnd.Next(0, Game.Height)), new
@@ -137,10 +147,7 @@ namespace MyGame
                 _asteroids[i] = new Asteroid(new Point(1000, rnd.Next(0, Game.Height)),
                 new Point(-r / 5, r), new Size(r, r));
             }
-            
-            for (int i = 30; i < 31; i++)
-                _objs[i] = new Ufo(new Point(600, i * 50-1200), new Point(-i/4, -i/2), new Size(30, 30));
-            
+            _medic = new Medic(new Point(600, 300), new Point(-50 / 8, -50 / 4), new Size(30, 30));
         }
     }
 }
