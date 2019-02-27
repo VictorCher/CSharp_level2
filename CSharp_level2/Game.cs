@@ -5,6 +5,16 @@ namespace MyGame
 {
     static class Game
     {
+        private static Timer _timer = new Timer();
+        public static Random Rnd = new Random();
+        private static void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey) _bullet = new Bullet(new
+            Point(_ship.Rect.X + 10, _ship.Rect.Y + 4), new Point(4, 0), new Size(4, 1));
+            if (e.KeyCode == Keys.Up) _ship.Up();
+            if (e.KeyCode == Keys.Down) _ship.Down();
+        }
+        private static Ship _ship = new Ship(new Point(10, 400), new Point(5, 5), new Size(10, 10));
         private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
         // Свойства
@@ -34,11 +44,13 @@ namespace MyGame
             Timer timer = new Timer { Interval = 100 };
             timer.Start();
             timer.Tick += Timer_Tick;
+            form.KeyDown += Form_KeyDown;
+            Ship.MessageDie += Finish;
         }
         public static void Draw()
         {
             // Проверяем вывод графики
-            Buffer.Graphics.Clear(Color.Black);
+            //Buffer.Graphics.Clear(Color.Black);
             //Buffer.Graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));
             //Buffer.Graphics.FillEllipse(Brushes.Wheat, new Rectangle(100, 100, 200, 200));
             //Buffer.Render();
@@ -46,9 +58,13 @@ namespace MyGame
             foreach (BaseObject obj in _objs)
                 obj.Draw();
             foreach (Asteroid obj in _asteroids)
-                obj.Draw();
+                obj?.Draw();
 
-            _bullet.Draw();
+            _bullet?.Draw();
+            _ship?.Draw();
+            if (_ship != null)
+                Buffer.Graphics.DrawString("Energy:" + _ship.Energy,
+                SystemFonts.DefaultFont, Brushes.White, 0, 0);
             Buffer.Render();
         }
         private static void Timer_Tick(object sender, EventArgs e)
@@ -60,7 +76,9 @@ namespace MyGame
         {
             foreach (BaseObject obj in _objs)
                 obj.Update();
-            foreach (Asteroid obj in _asteroids)
+
+
+            /*foreach (Asteroid obj in _asteroids)
             {
                 obj.Update();
                 if (obj.Collision(_bullet))
@@ -69,8 +87,34 @@ namespace MyGame
                     obj.Update(true);
                     _bullet.Update(true);
                 }
+            }*/
+            for (var i = 0; i < _asteroids.Length; i++)
+            {
+                if (_asteroids[i] == null) continue;
+                _asteroids[i].Update();
+                if (_bullet != null && _bullet.Collision(_asteroids[i]))
+                {
+                    System.Media.SystemSounds.Hand.Play();
+                    _asteroids[i] = null;
+                    _bullet = null;
+                    continue;
+                }
+                if (!_ship.Collision(_asteroids[i])) continue;
+                var rnd = new Random();
+                _ship?.EnergyLow(rnd.Next(1, 10));
+                System.Media.SystemSounds.Asterisk.Play();
+                if (_ship.Energy <= 0) _ship?.Die();
             }
+
+
             _bullet.Update();
+        }
+        public static void Finish()
+        {
+            _timer.Stop();
+            Buffer.Graphics.DrawString("The End", new Font(FontFamily.GenericSansSerif,
+            60, FontStyle.Underline), Brushes.White, 200, 100);
+            Buffer.Render();
         }
         public static BaseObject[] _objs;
         private static Bullet _bullet;
@@ -79,7 +123,7 @@ namespace MyGame
         {
             _objs = new BaseObject[31];
             _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
-            _asteroids = new Asteroid[20];
+            _asteroids = new Asteroid[10];
             var rnd = new Random();
             for (var i = 0; i < _objs.Length-1; i++)
             {
@@ -93,8 +137,10 @@ namespace MyGame
                 _asteroids[i] = new Asteroid(new Point(1000, rnd.Next(0, Game.Height)),
                 new Point(-r / 5, r), new Size(r, r));
             }
+            
             for (int i = 30; i < 31; i++)
                 _objs[i] = new Ufo(new Point(600, i * 50-1200), new Point(-i/4, -i/2), new Size(30, 30));
+            
         }
     }
 }

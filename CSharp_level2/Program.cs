@@ -1,4 +1,4 @@
-﻿// Чернышов Виктор. Урок 2
+﻿// Чернышов Виктор. Урок 3
 
 using System;
 using System.Windows.Forms;
