@@ -1,6 +1,8 @@
-﻿// Чернышов Виктор. Урок 3
+﻿// Чернышов Виктор. Урок 4
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace MyGame
@@ -9,12 +11,8 @@ namespace MyGame
     {
         static void Task1()
         {
-            /* 1. Добавить космический корабль, как описано в уроке.
-             * 2. Доработать игру «Астероиды»:
-             * a. Добавить ведение журнала в консоль с помощью делегатов;
-             * b. * добавить это и в файл.
-             * 3. Разработать аптечки, которые добавляют энергию.
-             * 4. Добавить подсчет очков за сбитые астероиды. */
+            /* Добавить в программу коллекцию астероидов. Как только она заканчивается (все астероиды
+             * сбиты), формируется новая коллекция, в которой на один астероид больше. */
 
             Form form = new Form();
             form.Width = 800;
@@ -25,9 +23,26 @@ namespace MyGame
             Application.Run(form);
         }
 
+        static void Task2()
+        {
+            /* 2. Дана коллекция List<T> . Требуется подсчитать, сколько раз каждый элемент встречается в
+             * данной коллекции:
+             * a. для целых чисел;
+             * b. * для обобщенной коллекции;
+             * c. ** используя Linq. */
+            List<int> collection = new List<int> { 2, 5, -3, 7, 5};
+            foreach (int val in collection.Distinct())
+            {
+                Console.WriteLine($"Значение {val} встречается: {collection.Where(x => x == val).Count()} раз");
+            }
+        }
+
         static void Main(string[] args)
         {
-            Task1();
+            //Task1();
+            Task2();
+
+            Console.ReadKey();
         }
     }
 }

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Collections.Generic;
+
 namespace MyGame
 {
     static class Game
     {
+        static int level = 0;
         static Action<string> log = (msg) => { Console.WriteLine(msg); };
         private static Timer _timer = new Timer();
         public static Random Rnd = new Random();
@@ -13,7 +16,7 @@ namespace MyGame
         private static Ship _ship; // Космический корабль
         public static BaseObject[] _objs; // Звезды
         public static BaseObject _medic; // Аптечка
-        private static Bullet _bullet; // Пуля
+        private static List<Bullet> _bullets; // Пули
         private static Asteroid[] _asteroids; // Астероиды
 
         // Свойства
@@ -28,8 +31,10 @@ namespace MyGame
         /// <param name="e"></param>
         private static void Form_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.ControlKey) _bullet = new Bullet(new
-            Point(_ship.Rect.X + 10, _ship.Rect.Y + 4), new Point(4, 0), new Size(4, 1));
+            if (e.KeyCode == Keys.ControlKey) _bullets.Add(new Bullet(new Point(_ship.Rect.X
++ 10, _ship.Rect.Y + 4), new Point(4, 0), new Size(4, 1)));
+            /*if (e.KeyCode == Keys.ControlKey) _bullet = new Bullet(new
+            Point(_ship.Rect.X + 10, _ship.Rect.Y + 4), new Point(4, 0), new Size(4, 1));*/
             if (e.KeyCode == Keys.Up) _ship.Up();
             if (e.KeyCode == Keys.Down) _ship.Down();
         }
@@ -61,6 +66,7 @@ namespace MyGame
             timer.Tick += Timer_Tick;
             form.KeyDown += Form_KeyDown;
             Ship.MessageDie += Finish;
+            level = 1;
         }
 
         /// <summary>
@@ -75,7 +81,7 @@ namespace MyGame
             foreach (Asteroid obj in _asteroids)
                 obj?.Draw();
             _medic?.Draw();
-            _bullet?.Draw();
+            foreach (Bullet b in _bullets) b.Draw();
             _ship?.Draw();
             // Выводим на экран уровень энергии и количество сбитых астероидов
             if (_ship != null)
@@ -84,6 +90,8 @@ namespace MyGame
                 SystemFonts.DefaultFont, Brushes.White, 0, 0);
                 Buffer.Graphics.DrawString("Score:" + _ship.Score,
                 SystemFonts.DefaultFont, Brushes.White, 0, 20);
+                Buffer.Graphics.DrawString("Level:" + level,
+                SystemFonts.DefaultFont, Brushes.White, 0, 40);
             }
             Buffer.Render();
         }
@@ -104,28 +112,40 @@ namespace MyGame
         /// </summary>
         public static void Update()
         {
-            if (_ship.Energy <= 0) 
+            if (_ship.Energy <= 0)
             {
-                _ship?.Die();
+                _ship.Die();
                 Finish();
                 log("Игра закончена");
                 return;
             }
+            for (int i = 0; i < _bullets.Count; i++) {
+                if(_bullets[i]?.X > Width)
+                    _bullets.RemoveAt(i);
+            }
+            foreach (BaseObject obj in _objs) obj?.Update();
+            foreach (Bullet b in _bullets) b?.Update();
+            _medic?.Update();
+            int countAsteroids = 0;
             for (var i = 0; i < _asteroids.Length; i++)
             {
                 if (_asteroids[i] == null) continue;
+                countAsteroids++;
                 _asteroids[i].Update();
-                if (_bullet != null && _bullet.Collision(_asteroids[i]))
+                for (int j = 0; j < _bullets.Count; j++)
                 {
-                    log("Пуля попала в астероид");
-                    System.Media.SystemSounds.Hand.Play();
-                    _asteroids[i] = null;
-                    _bullet = null;
-                    _ship.AddScore();
-                    log("Счет увеличился");
-                    continue;
+                    if (_asteroids[i] != null && _bullets[j].Collision(_asteroids[i]))
+                    {
+                        log("Пуля попала в астероид");
+                        System.Media.SystemSounds.Hand.Play();
+                        _asteroids[i] = null;
+                        _bullets.RemoveAt(j);
+                        j--;
+                        _ship.AddScore();
+                        log("Счет увеличился");
+                    }
                 }
-                if (!_ship.Collision(_asteroids[i])) continue;
+                if (_asteroids[i] == null || !_ship.Collision(_asteroids[i])) continue;
                 log("Столкновение с астероидом");
                 var rnd = new Random();
                 int temp = rnd.Next(1, 10);
@@ -139,10 +159,19 @@ namespace MyGame
                 _ship?.EnergyHigh(5);
                 log("Поправили здоровье");
             }
-            foreach (BaseObject obj in _objs)
-                obj?.Update();
-            _bullet?.Update();
-            _medic?.Update();
+            if (countAsteroids == 0)
+            {
+                level++;
+                log("Переходим на следующий уровень");
+                _asteroids = new Asteroid[_asteroids.Length + 1];
+                var rnd = new Random();
+                for (var i = 0; i < _asteroids.Length; i++)
+                {
+                    int r = rnd.Next(5, 50);
+                    _asteroids[i] = new Asteroid(new Point(1000, rnd.Next(0, Game.Height)),
+                    new Point(-r / 5, r), new Size(r, r));
+                }
+            }
         }
 
         /// <summary>
@@ -162,7 +191,7 @@ namespace MyGame
         public static void Load()
         {
             _objs = new BaseObject[30];
-            _asteroids = new Asteroid[10];
+            _asteroids = new Asteroid[1];
             var rnd = new Random();
             for (var i = 0; i < _objs.Length; i++)
             {
@@ -178,6 +207,7 @@ namespace MyGame
             }
             _medic = new Medic(new Point(600, 300), new Point(-50 / 8, -50 / 4), new Size(30, 30));
             _ship = new Ship(new Point(10, 400), new Point(5, 5), new Size(10, 10));
+            _bullets = new List<Bullet>();
         }
     }
 }

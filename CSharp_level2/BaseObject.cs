@@ -13,6 +13,7 @@ namespace MyGame
         protected Point Pos;
         protected Point Dir;
         protected Size Size;
+        public int X=>Pos.X;
 
         public BaseObject(Point pos, Point dir, Size size)
         {
