@@ -30,10 +30,26 @@ namespace MyGame
              * a. для целых чисел;
              * b. * для обобщенной коллекции;
              * c. ** используя Linq. */
-            List<int> collection = new List<int> { 2, 5, -3, 7, 5};
+            List<int> collection = new List<int> { 2, 5, -3, 7, 5, 1};
+
             foreach (int val in collection.Distinct())
-            {
                 Console.WriteLine($"Значение {val} встречается: {collection.Where(x => x == val).Count()} раз");
+
+            /* int[] mas = collection.ToArray();
+            foreach (int i in mas)
+            {
+                int count = 0;
+                while (collection.Remove(i)) count++;
+                if (count > 0)
+                    Console.WriteLine("Значение " + i + " повторяется " + count + " раз");
+            }*/
+
+            while (collection.Count>0)
+            {
+                int x = collection[0];
+                int count = 0;
+                while (collection.Remove(x)) count++;
+                Console.WriteLine("Значение " + x + " повторяется " + count + " раз");
             }
         }
 
