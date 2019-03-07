@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSharp_level2_Wpf"
         mc:Ignorable="d"
-        Title="Редактирование" Height="100" Width="330" ShowInTaskbar="False" ResizeMode="NoResize">
+        Height="245" Width="335" ShowInTaskbar="False" ResizeMode="NoResize">
     <Grid>
-        <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="165,40,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="comboBox_SelectionChanged"/>
-        <Label x:Name="label" Content="Имя" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
-        <Label x:Name="label_Copy" Content="Отдел" HorizontalAlignment="Left" Height="30" Margin="165,10,-21,0" VerticalAlignment="Top" Width="150"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="22" Margin="10,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" IsEnabled="False"/>
-
+        <ComboBox x:Name="comboBoxDeportment" HorizontalAlignment="Left" Margin="169,40,0,0" VerticalAlignment="Top" Width="150"/>
+        <Label x:Name="label1" Content="Имя" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
+        <Label x:Name="label2" Content="Отдел" HorizontalAlignment="Left" Height="30" Margin="169,10,0,0" VerticalAlignment="Top" Width="150"/>
+        <Button x:Name="button" Content="ОК" HorizontalAlignment="Left" Height="22" Margin="252,185,0,0" VerticalAlignment="Top" Width="67" Click="button_Click"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
     </Grid>
 </Window>

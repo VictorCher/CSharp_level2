@@ -7,22 +7,23 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
-        Name ="MyForm" Title="Сотрудники" Height="245" Width="325" ResizeMode="NoResize" ShowInTaskbar="False">
+        Name ="MyForm" Title="Сотрудники" Height="245" Width="425" ResizeMode="NoResize" ShowInTaskbar="False">
     <Grid>
         <ListView x:Name="listView1"  
                   HorizontalAlignment="Left" 
                   Height="162" 
                   Margin="10,10,0,0" 
                   VerticalAlignment="Top" 
-                  Width="300" SelectionChanged="listView1_SelectionChanged">
+                  Width="399">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Имя" Width="150" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
-                    <GridViewColumn Header="Отдел" Width="150" DisplayMemberBinding="{Binding Department}"></GridViewColumn>
+                    <GridViewColumn Header="Имя" Width="194" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
+                    <GridViewColumn Header="Отдел" Width="194" DisplayMemberBinding="{Binding Department}"></GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="button1" Content="Добавить" HorizontalAlignment="Left" Height="30" Margin="35,177,0,0" VerticalAlignment="Top" Width="100"/>
-        <Button x:Name="button2" Content="Редактировать" HorizontalAlignment="Left" Height="30" Margin="185,177,0,0" VerticalAlignment="Top" Width="100" Click="button2_Click"/>
+        <Button x:Name="button1" Content="Добавить сотрудника" HorizontalAlignment="Left" Height="30" Margin="10,177,0,0" VerticalAlignment="Top" Width="130" Click="button1_Click"/>
+        <Button x:Name="button2" Content="Редактировать" HorizontalAlignment="Left" Height="30" Margin="280,177,0,0" VerticalAlignment="Top" Width="130" Click="button2_Click"/>
+        <Button x:Name="button3" Content="Добавить отдел" HorizontalAlignment="Left" Height="30" Margin="145,177,0,0" VerticalAlignment="Top" Width="130" Click="button3_Click"/>
     </Grid>
 </Window>

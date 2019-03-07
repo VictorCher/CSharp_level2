@@ -19,21 +19,41 @@ namespace CSharp_level2_Wpf
     /// </summary>
     public partial class EditEmployee : Window
     {
+        int indexName;
+        public int IndexName { set { indexName = value; } }
+
+        /// <summary>
+        /// Инициализация окна ввода данных
+        /// </summary>
         public EditEmployee()
         {
             InitializeComponent();
+            comboBoxDeportment.ItemsSource = MainWindow.department;
+            foreach (string dep in MainWindow.department)
+                comboBoxDeportment.Items.Contains(dep);
         }
 
-        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// Кнопка подтвержнения введенных данных
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_Click(object sender, RoutedEventArgs e)
         {
-            int index = comboBox.SelectedIndex;
-            string val = textBox.Text;
-            if (index == -1 && val != null) return;
-            MainWindow.update(index,val);
-            //string editName = employee[index].Name;
-            //string editDepartment = MainWindow.employee[index].Edit;
+            string val = comboBoxDeportment.Text;
+            if (indexName != -1)
+                // Если окно было открыто для редактирования
+                MainWindow.update(indexName, val);
+            else
+            {
+                if(comboBoxDeportment.IsVisible == true && val != "")
+                    // Если окно было открыто для добавления нового сотрудника
+                    MainWindow.addEmpl(textBox.Text, val);
+                else if(textBox.Text != "")
+                    // Если окно было открыто для добавления нового отдела
+                    MainWindow.addDep(textBox.Text);
+            }   
+            Close();
         }
-
-        
     }
 }
