@@ -19,8 +19,7 @@ namespace CSharp_level2_Wpf
     /// </summary>
     public partial class EditEmployee : Window
     {
-        int indexName;
-        public int IndexName { set { indexName = value; } }
+        public int IndexName { get; set; }
 
         /// <summary>
         /// Инициализация окна ввода данных
@@ -29,8 +28,6 @@ namespace CSharp_level2_Wpf
         {
             InitializeComponent();
             comboBoxDeportment.ItemsSource = MainWindow.department;
-            foreach (string dep in MainWindow.department)
-                comboBoxDeportment.Items.Contains(dep);
         }
 
         /// <summary>
@@ -41,17 +38,17 @@ namespace CSharp_level2_Wpf
         private void button_Click(object sender, RoutedEventArgs e)
         {
             string val = comboBoxDeportment.Text;
-            if (indexName != -1)
-                // Если окно было открыто для редактирования
-                MainWindow.update(indexName, val);
+            if (IndexName != -1)
+                // Если окно было открыто для редактирования сотрудника (отдела к которому относится)
+                MainWindow.employee[IndexName].Edit = val;
             else
             {
                 if(comboBoxDeportment.IsVisible == true && val != "")
                     // Если окно было открыто для добавления нового сотрудника
-                    MainWindow.addEmpl(textBox.Text, val);
-                else if(textBox.Text != "")
+                    MainWindow.employee.Add(new Employee(textBox.Text, val));
+                else if (textBox.Text != "")
                     // Если окно было открыто для добавления нового отдела
-                    MainWindow.addDep(textBox.Text);
+                    MainWindow.department.Add(textBox.Text);
             }   
             Close();
         }

@@ -1,6 +1,7 @@
-﻿// Чернышов Виктор. Урок 5
+﻿// Чернышов Виктор. Урок 6
 /* Задание:
- * Создать WPF -приложение для ведения списка сотрудников компании.
+ * Создать WPF -приложение для ведения списка сотрудников компании, используя
+ * связывание данных, ListView, ObservableCollection и INotifyPropertyChanged.
  * 1. Создать сущности Employee и Department и заполнить списки сущностей начальными данными.
  * 2. Для списка сотрудников и списка департаментов предусмотреть визуализацию (отображение).
  * Это можно сделать, например, с использованием ComboBox или ListView.
@@ -12,6 +13,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,14 +31,10 @@ using System.Windows.Shapes;
 
 namespace CSharp_level2_Wpf
 {
-    public delegate void Update(int index, string val);
-    public delegate void AddEmpl(string index, string val);
-    public delegate void AddDep(string index);
-
     /// <summary>
     /// Описывает сотрудника
     /// </summary>
-    class Employee
+    public class Employee : INotifyPropertyChanged
     {
         string name;
         string department;
@@ -45,7 +45,19 @@ namespace CSharp_level2_Wpf
         }
         public string Name => name;
         public string Department => department;
-        public string Edit { set { department = value; } }
+        public string Edit
+        {
+            set
+            {
+                department = value;
+                NotifyPropertyChanged(nameof(department));
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     /// <summary>
@@ -53,42 +65,8 @@ namespace CSharp_level2_Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static Update update;
-        public static AddEmpl addEmpl;
-        public static AddDep addDep;
-        public static List<string> department; // Список отделов
-        List<Employee> employee; // Список сотрудников
-
-        /// <summary>
-        /// Редактирует отдел к которому относится сотрудник
-        /// </summary>
-        /// <param name="index">Порядковый номер сотрудника в списке (начиная с 0)</param>
-        /// <param name="val">Название отдела</param>
-        public void Edit(int index, string val)
-        {
-            employee[index].Edit = val;
-            listView1.Items.Refresh();
-        }
-
-        /// <summary>
-        /// Добавляет нового сотрудника
-        /// </summary>
-        /// <param name="name">Имя сотрудника</param>
-        /// <param name="department">Название отдела</param>
-        public void Add(string name,string department)
-        {
-            employee.Add(new Employee(name, department));
-            listView1.Items.Refresh();
-        }
-
-        /// <summary>
-        /// Добавляет новый отдел
-        /// </summary>
-        /// <param name="dep">Название отдела</param>
-        public void Add(string dep)
-        {
-            department.Add(dep);
-        }
+        public static ObservableCollection<string> department; // Список отделов
+        public static ObservableCollection<Employee> employee; // Список сотрудников    
 
         /// <summary>
         /// Инициализация
@@ -96,23 +74,14 @@ namespace CSharp_level2_Wpf
         public MainWindow()
         {
             InitializeComponent();
-            update = Edit;
-            addEmpl = Add;
-            addDep = Add;
             // Создаем отделы
-            department = new List<string> { "ОТК", "Отдел кадров", "КБ", "Сервисный отдел" };
+            department = new ObservableCollection<string> { "ОТК", "Отдел кадров", "КБ", "Сервисный отдел" };
             // Создаем сотрудников
-            employee = new List<Employee>();
+            employee = new ObservableCollection<Employee>();
             employee.Add(new Employee( "Василий","ОТК"));
             employee.Add(new Employee("Петр", "КБ"));
-            employee.Add(new Employee("Владимир", "Сервисный отдел"));
-            // Выводим всех имеющихся сотрудников на экран
-            listView1.ItemsSource = employee;
-            foreach (Employee e in employee)
-            {
-                listView1.Items.Contains(e.Name);
-                listView1.Items.Contains(e.Department);
-            }     
+            employee.Add(new Employee("Владимир", "Сервисный отдел"));  
+            listView1.ItemsSource = employee;           
         }
 
         /// <summary>
