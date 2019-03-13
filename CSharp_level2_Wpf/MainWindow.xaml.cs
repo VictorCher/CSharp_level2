@@ -1,4 +1,4 @@
-﻿// Чернышов Виктор. Урок 6
+﻿// Чернышов Виктор. Урок 7
 /* Задание:
  * Создать WPF -приложение для ведения списка сотрудников компании, используя
  * связывание данных, ListView, ObservableCollection и INotifyPropertyChanged.
@@ -12,6 +12,8 @@
  * либо на форме редактирования, либо сделать новую форму. */
 
 using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -74,6 +76,17 @@ namespace CSharp_level2_Wpf
         public MainWindow()
         {
             InitializeComponent();
+            /*string connectionString = @"(localdb)\mssqllocaldb;
+                                        Initial Catalog=lesson7;
+                                        Integrated Security=True;
+                                        Pooling=True";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT COUNT(*) FROM People";
+            int cnt = Convert.ToInt32(command.ExecuteScalar());
+            Console.WriteLine(cnt.ToString());
+            connection.Close();*/
             // Создаем отделы
             department = new ObservableCollection<string> { "ОТК", "Отдел кадров", "КБ", "Сервисный отдел" };
             // Создаем сотрудников
