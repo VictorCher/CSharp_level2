@@ -76,17 +76,7 @@ namespace CSharp_level2_Wpf
         public MainWindow()
         {
             InitializeComponent();
-            /*string connectionString = @"(localdb)\mssqllocaldb;
-                                        Initial Catalog=lesson7;
-                                        Integrated Security=True;
-                                        Pooling=True";
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT COUNT(*) FROM People";
-            int cnt = Convert.ToInt32(command.ExecuteScalar());
-            Console.WriteLine(cnt.ToString());
-            connection.Close();*/
+            
             // Создаем отделы
             department = new ObservableCollection<string> { "ОТК", "Отдел кадров", "КБ", "Сервисный отдел" };
             // Создаем сотрудников
@@ -148,6 +138,52 @@ namespace CSharp_level2_Wpf
             childWindows1.label2.Visibility = Visibility.Collapsed;
             childWindows1.label1.Content = "Отдел";
             childWindows1.Show();
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            string connectionString = @"Data Source=(localdb)\mssqllocaldb;
+                                        Initial Catalog=lesson7;
+                                        Integrated Security=True;
+                                        Pooling=True";
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand command = new SqlCommand();
+            connection.Open();
+            command.Connection = connection;
+            /*command.CommandText = @"INSERT INTO [People] (FIO,
+Birthday,Email,Phone) output INSERTED.ID VALUES ('Сидоров Сидор Сидорович',
+'16.10.2007', 'somebody@gmail.com', '89164444444' );";*/
+            //command.CommandText = @"UPDATE [People] SET FIO = @Сидоров_Сидор_Сидорович";
+            //SqlParameter param = new SqlParameter("@Сидоров_Сидор_Сидорович", "Сидоров Сидор Сидорович");
+            //command.Parameters.AddWithValue("@Сидоров_Сидор_Сидорович", "Сидоров Сидор Сидорович");
+            //command.ExecuteNonQuery();
+            //command.Connection = connection;
+            command.CommandText = @"SELECT * FROM People";
+
+            /*SqlDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+            if (reader.HasRows) // Если есть данные
+            {
+                while (reader.Read()) // Построчно считываем данные
+                {
+                    var vId = Convert.ToInt32(reader.GetValue(0));
+                    var vFIO = reader.GetString(1);
+                    var vEmail = reader["Email"];
+                    var vPhone = reader.GetString(reader.GetOrdinal("Phone"));
+                }
+            }*/
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            adapter.SelectCommand = command;
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+
+
+
+            command.CommandText = "SELECT COUNT(*) FROM [People]";
+            Console.WriteLine(command.ExecuteScalar());
+            command.ExecuteNonQuery();
+
+            connection.Close();
         }
     }
 }
