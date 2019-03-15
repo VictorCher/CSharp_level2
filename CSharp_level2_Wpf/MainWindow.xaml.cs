@@ -33,6 +33,9 @@ using System.Windows.Shapes;
 
 namespace CSharp_level2_Wpf
 {
+    public delegate void updateDepartment(string d);
+    public delegate void insertDepartment(string d);
+    public delegate void insertEmployee(string n, string d);
     /// <summary>
     /// Описывает сотрудника
     /// </summary>
@@ -68,7 +71,11 @@ namespace CSharp_level2_Wpf
     public partial class MainWindow : Window
     {
         public static ObservableCollection<string> department; // Список отделов
-        public static ObservableCollection<Employee> employee; // Список сотрудников    
+        public static ObservableCollection<Employee> employee; // Список сотрудников 
+        MyWorkingWithDatabase myDB;
+        public static updateDepartment UpdateD;
+        public static insertDepartment InsertD;
+        public static insertEmployee InsertE;
 
         /// <summary>
         /// Инициализация
@@ -76,14 +83,19 @@ namespace CSharp_level2_Wpf
         public MainWindow()
         {
             InitializeComponent();
-            
+
             // Создаем отделы
-            department = new ObservableCollection<string> { "ОТК", "Отдел кадров", "КБ", "Сервисный отдел" };
+            department = new ObservableCollection<string>(); // { "ОТК", "Отдел кадров", "КБ", "Сервисный отдел" };
             // Создаем сотрудников
             employee = new ObservableCollection<Employee>();
-            employee.Add(new Employee( "Василий","ОТК"));
+            /*employee.Add(new Employee( "Василий","ОТК"));
             employee.Add(new Employee("Петр", "КБ"));
-            employee.Add(new Employee("Владимир", "Сервисный отдел"));  
+            employee.Add(new Employee("Владимир", "Сервисный отдел"));*/
+            myDB = new MyWorkingWithDatabase();
+            myDB.ReadDB();
+            UpdateD = myDB.UpdateDB;
+            InsertD = myDB.UpdateDB;
+            InsertE = myDB.InsertDB;
             listView1.ItemsSource = employee;           
         }
 
@@ -148,17 +160,16 @@ namespace CSharp_level2_Wpf
                                         Pooling=True";
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand command = new SqlCommand();
-            connection.Open();
+            //connection.Open();
             command.Connection = connection;
-            /*command.CommandText = @"INSERT INTO [People] (FIO,
-Birthday,Email,Phone) output INSERTED.ID VALUES ('Сидоров Сидор Сидорович',
-'16.10.2007', 'somebody@gmail.com', '89164444444' );";*/
+            //command.CommandText = @"DROP TABLE [People];";
+            //command.CommandText = @"INSERT INTO [Employees] (Name, Department) VALUES (N'Владимир',N'Сервисный отдел');";
+            //command.ExecuteNonQuery();
             //command.CommandText = @"UPDATE [People] SET FIO = @Сидоров_Сидор_Сидорович";
             //SqlParameter param = new SqlParameter("@Сидоров_Сидор_Сидорович", "Сидоров Сидор Сидорович");
             //command.Parameters.AddWithValue("@Сидоров_Сидор_Сидорович", "Сидоров Сидор Сидорович");
-            //command.ExecuteNonQuery();
             //command.Connection = connection;
-            command.CommandText = @"SELECT * FROM People";
+            //command.CommandText = @"SELECT * FROM People";
 
             /*SqlDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
             if (reader.HasRows) // Если есть данные
@@ -171,19 +182,19 @@ Birthday,Email,Phone) output INSERTED.ID VALUES ('Сидоров Сидор Си
                     var vPhone = reader.GetString(reader.GetOrdinal("Phone"));
                 }
             }*/
-            SqlDataAdapter adapter = new SqlDataAdapter();
+            /*SqlDataAdapter adapter = new SqlDataAdapter();
             adapter.SelectCommand = command;
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
+            DataSet ds = new DataSet();
+            adapter.Fill(ds);*/
+            
 
 
-
-
-            command.CommandText = "SELECT COUNT(*) FROM [People]";
+/*
+            command.CommandText = "SELECT COUNT(*) FROM [Employee]";
             Console.WriteLine(command.ExecuteScalar());
             command.ExecuteNonQuery();
 
-            connection.Close();
+            connection.Close();*/
         }
     }
 }
