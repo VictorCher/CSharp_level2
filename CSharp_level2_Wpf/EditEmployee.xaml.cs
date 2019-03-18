@@ -42,7 +42,7 @@ namespace CSharp_level2_Wpf
             {
                 // Если окно было открыто для редактирования сотрудника (отдела к которому относится)
                 MainWindow.employee[IndexName].Edit = val;
-                MainWindow.UpdateD.Invoke(val);
+                MainWindow.UpdateD.Invoke(MainWindow.employee[IndexName].Name, val);
             }
             else
             {

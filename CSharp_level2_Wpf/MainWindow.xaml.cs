@@ -33,7 +33,7 @@ using System.Windows.Shapes;
 
 namespace CSharp_level2_Wpf
 {
-    public delegate void updateDepartment(string d);
+    public delegate void updateDepartment(string n, string d);
     public delegate void insertDepartment(string d);
     public delegate void insertEmployee(string n, string d);
     /// <summary>
@@ -94,7 +94,7 @@ namespace CSharp_level2_Wpf
             myDB = new MyWorkingWithDatabase();
             myDB.ReadDB();
             UpdateD = myDB.UpdateDB;
-            InsertD = myDB.UpdateDB;
+            InsertD = myDB.InsertDB;
             InsertE = myDB.InsertDB;
             listView1.ItemsSource = employee;           
         }

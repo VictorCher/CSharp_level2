@@ -23,12 +23,12 @@ namespace CSharp_level2_Wpf
             command = new SqlCommand();
             command.Connection = connection;
         }
-        public void UpdateDB(string department)
+        public void UpdateDB(string name, string department)
         {
             connection.Open();
-            command.CommandText = @"UPDATE Departments SET Department = @Department";
-            command.Parameters.Add("@Department", SqlDbType.NVarChar, -1, department);
-            
+            command.CommandText = @"UPDATE Employees SET Department = N'" + department + "' WHERE Name = N'" + name + "';";
+            command.ExecuteNonQuery();
+            connection.Close();
         }
         public void InsertDB(string name, string department)
         {
