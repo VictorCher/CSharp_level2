@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
+using System.Data;
+using System.Data.SqlClient;
+using System.Web.Http;
+using WebAPI.Models;
 
-namespace CSharp_level2_Wpf
+namespace WebAPI.Controllers
 {
-    class MyWorkingWithDatabase
+    public class EmployeeController : ApiController
     {
-        public string ConnectionString { get; set; }
+        string ConnectionString { get; set; }
         SqlConnection connection;
         SqlCommand command;
-        public MyWorkingWithDatabase()
+        List<Employee> employees;
+        /*public EmployeeController()
         {
             ConnectionString = @"Data Source=(localdb)\mssqllocaldb;
                                         Initial Catalog=lesson7;
@@ -33,7 +35,7 @@ namespace CSharp_level2_Wpf
         public void InsertDB(string name, string department)
         {
             connection.Open();
-            command.CommandText = @"INSERT INTO [Employees] (Name, Department) VALUES (N'"+ name + "',N'" + department + "');";
+            command.CommandText = @"INSERT INTO [Employees] (Name, Department) VALUES (N'" + name + "',N'" + department + "');";
             command.ExecuteNonQuery();
             connection.Close();
         }
@@ -44,7 +46,43 @@ namespace CSharp_level2_Wpf
             command.ExecuteNonQuery();
             connection.Close();
         }
-        public void ReadDB()
+        */
+        public IEnumerable<Employee> GetAllItem()
+        {
+            //List<Employee> employees;
+            ConnectionString = @"Data Source=(localdb)\mssqllocaldb;
+                                        Initial Catalog=lesson7;
+                                        Integrated Security=True;
+                                        Pooling=True";
+            connection = new SqlConnection(ConnectionString);
+            command = new SqlCommand();
+            command.Connection = connection;
+            connection.Open();
+            command.CommandText = @"SELECT * FROM Employees";
+            var a = command.ExecuteScalar();
+            var b = command.ExecuteScalar();
+            var reader4 = command.ExecuteReader();
+            SqlDataReader reader3 = command.ExecuteReader(CommandBehavior.CloseConnection);
+            if (reader3.HasRows) // Если есть данные
+            {
+                //employees?.Clear();
+                while (reader3.Read()) // Построчно считываем данные
+                    this.employees.Add(new Employee { name = reader3.GetString(0), department = reader3.GetString(1) });
+            }
+            connection.Close();
+            return this.employees;
+        }
+        public IHttpActionResult GetItem(string id)
+        {
+            //var mans = employees.FirstOrDefault((p) => p.Name == id);
+            List<Employee> mans = new List<Employee>();
+            foreach (var s in employees)
+                if (s.name == id || s.department == id)
+                    mans.Add(new Employee { name = s.name, department = s.department });
+            //if(mans == null) return NotFound();
+            return Ok(mans);
+        }
+        /*public void ReadDB()
         {
             connection.Open();
             command.CommandText = @"SELECT * FROM Departments";
@@ -70,7 +108,6 @@ namespace CSharp_level2_Wpf
                     Console.WriteLine(reader1.GetString(1));
                 }
             }
-            connection.Close();
-        }
+            connection.Close();*/
     }
 }

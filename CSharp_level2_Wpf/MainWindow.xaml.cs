@@ -1,7 +1,11 @@
-﻿// Чернышов Виктор. Урок 7
+﻿// Чернышов Виктор. Урок 8
 /* Задание:
- * Создать WPF -приложение для ведения списка сотрудников компании, используя
- * связывание данных, ListView, ObservableCollection и INotifyPropertyChanged.
+ * Создать WPF -приложение для ведения списка сотрудников компании, используя веб-сервисы
+ * связывание данных, ListView, ObservableCollection и INotifyPropertyChanged. 
+ * Разделите приложение на две части. Первая часть – клиентское приложение,
+ * отображающее данные. Вторая часть – веб-сервис и код, связанный с извлечением данных из БД.
+ * Приложение реализует только просмотр данных. При разработке приложения допустимо использовать
+ * любой из рассмотренных типов веб-сервисов.
  * 1. Создать сущности Employee и Department и заполнить списки сущностей начальными данными.
  * 2. Для списка сотрудников и списка департаментов предусмотреть визуализацию (отображение).
  * Это можно сделать, например, с использованием ComboBox или ListView.
@@ -30,6 +34,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net.Http;
+using System.Net.Http.Formatting;
+
+
 
 namespace CSharp_level2_Wpf
 {
@@ -73,6 +81,8 @@ namespace CSharp_level2_Wpf
         public static ObservableCollection<string> department; // Список отделов
         public static ObservableCollection<Employee> employee; // Список сотрудников 
         MyWorkingWithDatabase myDB;
+
+
         public static updateDepartment UpdateD;
         public static insertDepartment InsertD;
         public static insertEmployee InsertE;
@@ -91,8 +101,19 @@ namespace CSharp_level2_Wpf
             /*employee.Add(new Employee( "Василий","ОТК"));
             employee.Add(new Employee("Петр", "КБ"));
             employee.Add(new Employee("Владимир", "Сервисный отдел"));*/
-            myDB = new MyWorkingWithDatabase();
-            myDB.ReadDB();
+            HttpClient client = new HttpClient(); // using System.Net.Http;
+            HttpResponseMessage result = client.GetAsync(@"http://localhost:50811/api/employees/").Result;
+            //employee = result.Content.ReadAsAsync<IEnumerable<ObservableCollection<Employee>>>();
+            //employee = result.Content.ReadAsAsync<IEnumerable<ObservableCollection<Employee>>>();
+
+            var res = result.Content.ReadAsAsync<IEnumerable<Employee>>();
+            /*foreach (ObservableCollection<Employee> oc in res.)
+            employee = result.Content.ReadAsAsync<IEnumerable<Employee>>();
+            Employee ssd;
+            //Converter <Employee, ObservableCollection<Employee>>
+            Convert.*/
+            //myDB = new MyWorkingWithDatabase();
+            //myDB.ReadDB();
             UpdateD = myDB.UpdateDB;
             InsertD = myDB.InsertDB;
             InsertE = myDB.InsertDB;
