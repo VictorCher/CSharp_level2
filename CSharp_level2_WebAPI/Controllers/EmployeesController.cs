@@ -5,20 +5,22 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using CSharp_level2_WebAPI.Models;
+using CSharp_level2_WebAPI;
 
 namespace CSharp_level2_WebAPI.Controllers
 {
     public class EmployeesController : ApiController
     {
-        Employee[] employees = new Employee[] 
+        /*Employee[] employees = new Employee[] 
         {
             new Employee {Name = "Василий", Department = "OTK" },
             new Employee {Name = "Пётр", Department = "Отдел кадров" },
             new Employee {Name = "Пётр", Department = "ИТ" },
-        };
+        };*/
+        List<Employee> employees = new List<Employee>();
         public IEnumerable<Employee> GetAllItem()
         {
-            return employees;
+            return new MyUsersDB().ReadDB();
         }
         public IHttpActionResult GetItem(string id)
         {
