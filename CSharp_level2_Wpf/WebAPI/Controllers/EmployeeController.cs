@@ -11,9 +11,9 @@ namespace WebAPI.Controllers
 {
     public class EmployeeController : ApiController
     {
-        string ConnectionString { get; set; }
-        SqlConnection connection;
-        SqlCommand command;
+        //string ConnectionString { get; set; }
+        //SqlConnection connection;
+        //SqlCommand command;
         List<Employee> employees;
         /*public EmployeeController()
         {
@@ -50,26 +50,28 @@ namespace WebAPI.Controllers
         public IEnumerable<Employee> GetAllItem()
         {
             //List<Employee> employees;
-            ConnectionString = @"Data Source=(localdb)\mssqllocaldb;
+            string ConnectionString = @"Data Source=(localdb)\mssqllocaldb;
                                         Initial Catalog=lesson7;
                                         Integrated Security=True;
                                         Pooling=True";
-            connection = new SqlConnection(ConnectionString);
-            command = new SqlCommand();
-            command.Connection = connection;
-            connection.Open();
-            command.CommandText = @"SELECT * FROM Employees";
-            var a = command.ExecuteScalar();
-            var b = command.ExecuteScalar();
-            var reader4 = command.ExecuteReader();
-            SqlDataReader reader3 = command.ExecuteReader(CommandBehavior.CloseConnection);
-            if (reader3.HasRows) // Если есть данные
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                //employees?.Clear();
-                while (reader3.Read()) // Построчно считываем данные
-                    this.employees.Add(new Employee { name = reader3.GetString(0), department = reader3.GetString(1) });
+                SqlCommand command = new SqlCommand();
+                command.Connection = connection;
+                connection.Open();
+                command.CommandText = @"SELECT * FROM Employees";
+                //var a = command.ExecuteScalar();
+                //var b = command.ExecuteScalar();
+                //var reader4 = command.ExecuteReader();
+                SqlDataReader reader3 = command.ExecuteReader(CommandBehavior.CloseConnection);
+                if (reader3.HasRows) // Если есть данные
+                {
+                    //employees?.Clear();
+                    while (reader3.Read()) // Построчно считываем данные
+                        this.employees.Add(new Employee { name = reader3.GetString(0), department = reader3.GetString(1) });
+                }
+                connection.Close();
             }
-            connection.Close();
             return this.employees;
         }
         public IHttpActionResult GetItem(string id)
