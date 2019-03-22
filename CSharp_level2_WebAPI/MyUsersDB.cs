@@ -25,17 +25,30 @@ namespace CSharp_level2_WebAPI
             command.Connection = connection;
         }
 
-        public List<Employee> ReadDB()
+        public List<Employee> ReadEmployee()
         {
             List<Employee> employees = new List<Employee>();
             connection.Open();
             command.CommandText = @"SELECT * FROM Employees";
-            SqlDataReader reader1 = command.ExecuteReader(CommandBehavior.CloseConnection);
-            if (reader1.HasRows) // Если есть данные
-                while (reader1.Read()) // Построчно считываем данные
-                    employees.Add(new Employee{Name = reader1.GetString(0),Department = reader1.GetString(1)});
+            SqlDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+            if (reader.HasRows) // Если есть данные
+                while (reader.Read()) // Построчно считываем данные
+                    employees.Add(new Employee{Name = reader.GetString(0),Department = reader.GetString(1)});
             connection.Close();
             return employees;
+        }
+
+        public List<Departments> ReadDepartment()
+        {
+            List<Departments> departments = new List<Departments>();
+            connection.Open();
+            command.CommandText = @"SELECT * FROM Departments";
+            SqlDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
+            if (reader.HasRows) // Если есть данные
+                while (reader.Read()) // Построчно считываем данные
+                    departments.Add(new Departments { Department = reader.GetString(0) });
+            connection.Close();
+            return departments;
         }
     }
 }

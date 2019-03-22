@@ -5,36 +5,24 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using CSharp_level2_WebAPI.Models;
-using CSharp_level2_WebAPI;
 
 namespace CSharp_level2_WebAPI.Controllers
 {
     public class EmployeesController : ApiController
     {
-        /*Employee[] employees = new Employee[] 
+        public IEnumerable<Employee> GetAllEmployees()
         {
-            new Employee {Name = "Василий", Department = "OTK" },
-            new Employee {Name = "Пётр", Department = "Отдел кадров" },
-            new Employee {Name = "Пётр", Department = "ИТ" },
-        };*/
-        List<Employee> employees = new List<Employee>();
-        public IEnumerable<Employee> GetAllItem()
-        {
-            return new MyUsersDB().ReadDB();
+            return new MyUsersDB().ReadEmployee();
         }
-        public IHttpActionResult GetItem(string id)
+
+        public IHttpActionResult GetEmployee(string id)
         {
-            //var mans = employees.FirstOrDefault((p) => p.Name == id);
-            List<Employee> mans = new List<Employee>();
+            List<Employee> employees = new MyUsersDB().ReadEmployee();
+            List<Employee> temp = new List<Employee>();
             foreach (var s in employees)
-                if (s.Name == id)
-                    mans.Add(new Employee { Name = s.Name, Department = s.Department });
-            //if(mans == null) return NotFound();
-            return Ok(mans);
+                if (s.Name == id || s.Department == id)
+                    temp.Add(new Employee { Name = s.Name, Department = s.Department });
+            return Ok(temp);
         }
-        /*public HttpResponseMessage GetBooks(int id)
-        {
-            return Ok(employees[id].Name);
-        }*/
     }
 }

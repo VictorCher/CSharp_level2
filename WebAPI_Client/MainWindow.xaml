@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebAPI_Client"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="268" Width="418">
+        Title="Сотрудники" Height="301" Width="453">
     <Grid>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="25" Margin="10,22,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="131"/>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Height="25" Margin="10,67,0,0" VerticalAlignment="Top" Width="131" Click="button_Click"/>
-
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="25" Margin="10,201,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="425"/>
+        <Button x:Name="button" Content="Вывести результат" HorizontalAlignment="Left" Height="25" Margin="160,236,0,0" VerticalAlignment="Top" Width="131" Click="button_Click"/>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="161" Margin="10,10,0,0" VerticalAlignment="Top" Width="425" AutoGenerateColumns="True" ItemsSource= "{Binding Source= employees}"/>
+        <Label x:Name="label" Content="Критерий вывода данных ( введите имя сотрудника или название отдела )" HorizontalAlignment="Left" Height="25" Margin="10,171,0,0" VerticalAlignment="Top" Width="425"/>
     </Grid>
 </Window>
